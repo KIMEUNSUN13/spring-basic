@@ -9,7 +9,21 @@ import hello.core.member.MemberServiceImpl;
 import hello.core.member.MemoryMemberRepository;
 import hello.core.order.OrderService;
 import hello.core.order.OrderServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+/*
+ * 스프링 기반으로 변경
+ * @Configuration을 붙여준다.
+ * 각 메서드에 @Bean을 붙여준다.
+ * 스프링 컨테이너에 스프링 빈으로 등록한다.
+ *
+ * @Bean이 붙은 메서드를 모두 호출해서 반환된 객체를 스프링 컨테이너에 등록한다.
+ * 이렇게 스프링 컨테이너에 등록 된 객체를 스프링 빈이라한다.
+ * 스프링 빈은 @Bean이 붙은 메서드의 명을 스프링 빈의 이름으로 사용한다.
+ */
+
+@Configuration
 public class AppConfig {
 
     /*
@@ -27,6 +41,7 @@ public class AppConfig {
      * 객체를 생성하고 구성(Configuration)하는 영역으로 분리되었다.
      */
 
+    @Bean
     public MemberService memberService() {
 
         /*
@@ -39,15 +54,18 @@ public class AppConfig {
         return new MemberServiceImpl(memberRepository());
     }
 
+    @Bean
     public OrderService orderService() {
         // return new OrderServiceImpl(new MemoryMemberRepository(), new FixDiscountPolicy());
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
+    @Bean
     public MemberRepository memberRepository() {
         return new MemoryMemberRepository();
     }
 
+    @Bean
     public DiscountPolicy discountPolicy() {
 
         /*

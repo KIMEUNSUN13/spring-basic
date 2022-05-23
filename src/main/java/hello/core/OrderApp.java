@@ -7,14 +7,24 @@ import hello.core.member.MemberServiceImpl;
 import hello.core.order.Order;
 import hello.core.order.OrderService;
 import hello.core.order.OrderServiceImpl;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class OrderApp {
     public static void main(String[] args) {
-        AppConfig appConfig = new AppConfig();
-        MemberService memberService = appConfig.memberService();
-        OrderService orderService = appConfig.orderService();
+
+        // 1. 순수한 자바 코드
+
+        // AppConfig appConfig = new AppConfig();
+        // MemberService memberService = appConfig.memberService();
+        // OrderService orderService = appConfig.orderService();
+
         // MemberServiceImpl memberService = new MemberServiceImpl();
         // OrderServiceImpl orderService = new OrderServiceImpl();
+
+        // 2. 스프링 컨테이너 적용
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
+        OrderService orderService = applicationContext.getBean("orderService", OrderService.class);
 
         long memberId = 1L;
         Member member = new Member(memberId, "memberA", Grade.VIP);
